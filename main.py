@@ -1,8 +1,10 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QAction
+from tkinter.tix import Form
+import serial
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu
+from PyQt5.uic.properties import QtWidgets, QtCore
 from main_win.win import Ui_mainWindow
 from PyQt5.QtCore import Qt, QPoint, QTimer, QThread, pyqtSignal
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QIcon
-
 import sys
 import os
 import json
@@ -12,20 +14,26 @@ import torch.backends.cudnn as cudnn
 import os
 import time
 import cv2
-
 from models.experimental import attempt_load
 from utils.datasets import LoadImages, LoadWebcam
 from utils.CustomMessageBox import MessageBox
 from utils.general import check_img_size, check_requirements, check_imshow, colorstr, non_max_suppression, \
     apply_classifier, scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
-# from utils.plots import colors, plot_one_box, plot_one_box_PIL
 from utils.plots import Annotator, colors, save_one_box
-
 from utils.torch_utils import select_device
 from utils.capnums import Camera
 from dialog.rtsp_win import Window
-
-
+haved_alarm = 1
+message = ''
+def str2unicode(text):
+    code = ''
+    for i in text:
+        hex_i = hex(ord(i))
+        if len(hex_i) == 4:
+            code += hex_i.replace('0x', '00')
+        else:
+            code += hex_i.replace('0x', '')
+    return code
 class DetThread(QThread):
     send_img = pyqtSignal(np.ndarray)
     send_raw = pyqtSignal(np.ndarray)
@@ -34,11 +42,10 @@ class DetThread(QThread):
     send_msg = pyqtSignal(str)
     send_percent = pyqtSignal(int)
     send_fps = pyqtSignal(str)
-
     def __init__(self):
         super(DetThread, self).__init__()
-        self.weights = './yolov5s.pt'
-        self.current_weight = './yolov5s.pt'
+        self.weights = './best.pt'
+        self.current_weight = './best.pt'
         self.source = '0'
         self.conf_thres = 0.25
         self.iou_thres = 0.45
@@ -48,7 +55,6 @@ class DetThread(QThread):
         self.rate_check = True                  # Whether to enable delay
         self.rate = 100
         self.save_fold = './result'
-
     @torch.no_grad()
     def run(self,
             imgsz=640,  # inference size (pixels)
@@ -72,8 +78,6 @@ class DetThread(QThread):
             hide_conf=False,  # hide confidences
             half=False,  # use FP16 half-precision inference
             ):
-
-        # Initialize
         try:
             device = select_device(device)
             half &= device.type != 'cpu'  # half precision only supported on CUDA
@@ -83,29 +87,23 @@ class DetThread(QThread):
             num_params = 0
             for param in model.parameters():
                 num_params += param.numel()
-            stride = int(model.stride.max())  # model stride
-            imgsz = check_img_size(imgsz, s=stride)  # check image size
+            stride = int(model.stride.max())
+            imgsz = check_img_size(imgsz, s=stride)
             names = model.module.names if hasattr(model, 'module') else model.names  # get class names
             if half:
-                model.half()  # to FP16
-
-            # Dataloader
+                model.half()
             if self.source.isnumeric() or self.source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://')):
                 view_img = check_imshow()
-                cudnn.benchmark = True  # set True to speed up constant image size inference
+                cudnn.benchmark = True
                 dataset = LoadWebcam(self.source, img_size=imgsz, stride=stride)
-                # bs = len(dataset)  # batch_size
             else:
                 dataset = LoadImages(self.source, img_size=imgsz, stride=stride)
-
-            # Run inference
             if device.type != 'cpu':
                 model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
             count = 0
             jump_count = 0
             start_time = time.time()
             dataset = iter(dataset)
-
             while True:
                 if self.jump_out:
                     self.vid_cap.release()
@@ -114,9 +112,7 @@ class DetThread(QThread):
                     if hasattr(self, 'out'):
                         self.out.release()
                     break
-                # change model
                 if self.current_weight != self.weights:
-                    # Load model
                     model = attempt_load(self.weights, map_location=device)  # load FP32 model
                     num_params = 0
                     for param in model.parameters():
@@ -125,16 +121,12 @@ class DetThread(QThread):
                     imgsz = check_img_size(imgsz, s=stride)  # check image size
                     names = model.module.names if hasattr(model, 'module') else model.names  # get class names
                     if half:
-                        model.half()  # to FP16
-                    # Run inference
+                        model.half()
                     if device.type != 'cpu':
                         model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
                     self.current_weight = self.weights
                 if self.is_continue:
                     path, img, im0s, self.vid_cap = next(dataset)
-                    # jump_count += 1
-                    # if jump_count % 5 != 0:
-                    #     continue
                     count += 1
                     if count % 30 == 0 and count >= 30:
                         fps = int(30/(time.time()-start_time))
@@ -145,33 +137,73 @@ class DetThread(QThread):
                         self.send_percent.emit(percent)
                     else:
                         percent = self.percent_length
-
                     statistic_dic = {name: 0 for name in names}
                     img = torch.from_numpy(img).to(device)
-                    img = img.half() if half else img.float()  # uint8 to fp16/32
-                    img /= 255.0  # 0 - 255 to 0.0 - 1.0
+                    img = img.half() if half else img.float()
+                    img /= 255.0
                     if img.ndimension() == 3:
                         img = img.unsqueeze(0)
-
                     pred = model(img, augment=augment)[0]
-
-                    # Apply NMS
                     pred = non_max_suppression(pred, self.conf_thres, self.iou_thres, classes, agnostic_nms, max_det=max_det)
-                    # Process detections
-                    for i, det in enumerate(pred):  # detections per image
+                    for i, det in enumerate(pred):
                         im0 = im0s.copy()
                         annotator = Annotator(im0, line_width=line_thickness, example=str(names))
                         if len(det):
-                            # Rescale boxes from img_size to im0 size
                             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
-
-                            # Write results
+                            zt = []
                             for *xyxy, conf, cls in reversed(det):
-                                c = int(cls)  # integer class
+                                c = int(cls)
                                 statistic_dic[names[c]] += 1
-                                label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
+                                label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} '                                                                                  f'{conf:.2f}')
+                                label_zt = f'{names[c]}'
                                 annotator.box_label(xyxy, label, color=colors(c, True))
+                                zt.append(label_zt)
+                            print(zt)
+                            zt_stateofdeath_count = zt.count('state of death')
+                            zt_dyingstate_count = zt.count('dying state')
+                            if zt_stateofdeath_count > 0 or zt_dyingstate_count > 0:
+                                if zt_stateofdeath_count > 0 and zt_dyingstate_count == 0:
+                                    message = '可能有' + str(zt_stateofdeath_count) + '条鱼死亡,请及时检查！'
+                                if zt_stateofdeath_count == 0 and zt_dyingstate_count > 0:
+                                    message = '可能有' + str(zt_dyingstate_count) + '条鱼半死不活,请及时检查！'
+                                if zt_stateofdeath_count > 0 and zt_dyingstate_count > 0:
+                                    message = '可能有' + str(zt_stateofdeath_count) + '条鱼死亡和有' + str(zt_dyingstate_count) + '条鱼半死不活,请及时检查！'
+                                global haved_alarm
+                                if haved_alarm == 0:
+                                    print(message)
+                                    ser = serial.Serial(current_COM, 9600, timeout=50)  # 使用PC发送
 
+                                    target_phone = str2unicode(mobilePhone)
+                                    send_text = str2unicode(message)
+
+                                    ser.write("AT+CMGF=1\r\n".encode())
+                                    time.sleep(0.5)
+
+                                    ser.write("AT+CSCA=\"+8613800100500\"\r\n".encode())
+                                    time.sleep(0.5)
+
+                                    ser.write("AT+CSMP=17,167,2,25\r\n".encode())
+                                    time.sleep(0.5)
+
+                                    ser.write("AT+CSCS=\"UCS2\"\r\n".encode())
+                                    time.sleep(0.5)
+
+                                    ser.write(f'AT+CMGS="{target_phone}"\r\n'.encode())
+                                    time.sleep(0.5)
+
+                                    ser.write(f'{send_text}\r\n'.encode())
+                                    time.sleep(1)
+
+                                    ser.write("\x1a\r\n".encode())
+                                    time.sleep(1)
+
+                                    sendContent = 'ATD' + mobilePhone + ';\r\n'
+                                    ser.write(sendContent.encode())
+                                    time.sleep(1)
+
+                                    ser.close()
+                                    haved_alarm = 1
+                                    print('程序运行完毕！')
                     if self.rate_check:
                         time.sleep(1/self.rate)
                     im0 = annotator.result()
@@ -204,12 +236,10 @@ class DetThread(QThread):
                         if hasattr(self, 'out'):
                             self.out.release()
                         break
-
         except Exception as e:
             self.send_msg.emit('%s' % e)
-
-
-
+mobilePhone='12355'
+current_COM='COM1'
 class MainWindow(QMainWindow, Ui_mainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -239,15 +269,23 @@ class MainWindow(QMainWindow, Ui_mainWindow):
         self.pt_list = os.listdir('./pt')
         self.pt_list = [file for file in self.pt_list if file.endswith('.pt')]
         self.pt_list.sort(key=lambda x: os.path.getsize('./pt/'+x))
+
         self.comboBox.clear()
         self.comboBox.addItems(self.pt_list)
         self.qtimer_search = QTimer(self)
         self.qtimer_search.timeout.connect(lambda: self.search_pt())
         self.qtimer_search.start(2000)
+        f = open("mobilephone.txt",encoding='utf-8')
+        global mobilePhone
+        mobilePhone = f.read()
+        self.lineEdit.setText(mobilePhone)
 
         # yolov5 thread
         self.det_thread = DetThread()
         self.model_type = self.comboBox.currentText()
+        global current_COM
+        current_COM = self.comboBox_1.currentText()
+
         self.det_thread.weights = "./pt/%s" % self.model_type
         self.det_thread.source = '0'
         self.det_thread.percent_length = self.progressBar.maximum()
@@ -260,22 +298,28 @@ class MainWindow(QMainWindow, Ui_mainWindow):
 
         self.fileButton.clicked.connect(self.open_file)
         self.cameraButton.clicked.connect(self.chose_cam)
-        self.rtspButton.clicked.connect(self.chose_rtsp)
+        # self.rtspButton.clicked.connect(self.chose_rtsp)
 
         self.runButton.clicked.connect(self.run_or_continue)
         self.stopButton.clicked.connect(self.stop)
 
+        self.pushButton_2.clicked.connect(self.change_mobilephone)
+
         self.comboBox.currentTextChanged.connect(self.change_model)
-        self.confSpinBox.valueChanged.connect(lambda x: self.change_val(x, 'confSpinBox'))
-        self.confSlider.valueChanged.connect(lambda x: self.change_val(x, 'confSlider'))
-        self.iouSpinBox.valueChanged.connect(lambda x: self.change_val(x, 'iouSpinBox'))
-        self.iouSlider.valueChanged.connect(lambda x: self.change_val(x, 'iouSlider'))
-        self.rateSpinBox.valueChanged.connect(lambda x: self.change_val(x, 'rateSpinBox'))
-        self.rateSlider.valueChanged.connect(lambda x: self.change_val(x, 'rateSlider'))
+        self.comboBox_1.currentTextChanged.connect(self.change_COM)
+        # self.confSpinBox.valueChanged.connect(lambda x: self.change_val(x, 'confSpinBox'))
+        # self.confSlider.valueChanged.connect(lambda x: self.change_val(x, 'confSlider'))
+        # self.iouSpinBox.valueChanged.connect(lambda x: self.change_val(x, 'iouSpinBox'))
+        # self.iouSlider.valueChanged.connect(lambda x: self.change_val(x, 'iouSlider'))
+        #self.rateSpinBox.valueChanged.connect(lambda x: self.change_val(x, 'rateSpinBox'))
+        #self.rateSlider.valueChanged.connect(lambda x: self.change_val(x, 'rateSlider'))
 
         self.checkBox.clicked.connect(self.checkrate)
-        self.saveCheckBox.clicked.connect(self.is_save)
+        # self.saveCheckBox.clicked.connect(self.is_save)
         self.load_setting()
+
+        # self.pushButton_2.raise_()
+
 
     def search_pt(self):
         pt_list = os.listdir('./pt')
@@ -287,18 +331,85 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             self.comboBox.clear()
             self.comboBox.addItems(self.pt_list)
 
-    def is_save(self):
-        if self.saveCheckBox.isChecked():
-            self.det_thread.save_fold = './result'
-        else:
-            self.det_thread.save_fold = None
+    def bodadianhua_uart(self):
+        try:
+            ser = serial.Serial("COM5", 9600, timeout=50)  # 使用PC发送
+            device = self.lineEdit.text()
+            ser.write("ATD"+device+";\r\n".encode())
+            #ser.write("ATD13580505707;\r\n".encode())
+            time.sleep(10)
+            print(ser.readline())
+        except Exception as exc:
+            print("串口打开异常:", exc)
 
-    def checkrate(self):
+    def fasongduanxin_uart(self):
+        ser = serial.Serial("COM4", 9600)  # 使用PC发送
+
+        ser.write("AT\r\n".encode())
+        time.sleep(1)
+        print(ser.readline())
+
+        ser.write("AT+CSCA=\"+8613800663500\"\r\n".encode())
+        time.sleep(1)
+        print(ser.readline())
+
+        ser.write("AT+CMGF=1\r\n".encode())
+        time.sleep(1)
+        print(ser.readline())
+        # xxx为你要发送短信的手机号
+        ser.write("AT+CMGS=\"17734601003\"\r\n".encode())
+        time.sleep(20)
+        print(ser.readline())
+
+        ser.write("hello".encode())
+        time.sleep(1)
+        print(ser.readline())
+
+        ser.write("\x1A\r\n".encode())
+        time.sleep(1)
+        print(ser.readline())
+
+    # def is_save(self):    #拨打电话
+    #     if self.saveCheckBox.isChecked():
+    #           print('///')
+
+
+
+
+        #     statistic_dic = {"A": 10, "B": 20, "C": 30}
+        #     self.show_statistic(statistic_dic)
+        # else:
+            # 如果复选框没有被选中，不输出结果到控制台
+            #pass
+            # results = self.show_statistic(self.statistic_dic)
+            # result_string = '\n'.join(results)
+            # print(result_string)
+            # results = self.show_statistic(statistic_dic)
+            # print(results)
+            #print(results)
+             # with open('results.txt', 'w') as f:
+            #     for result in self.saved_results:
+            #         f.write(result + '\n')
+         #if "state of death" in results:
+            #print("显示正常:")
+
+
+
+             # if 'dying state' in results:
+            #
+            #   self.bodadianhua_uart()
+        #     self.det_thread.save_fold = './result'
+        # else:
+        #     self.det_thread.save_fold = None
+
+    def checkrate(self):     #发送短信
+        global haved_alarm
         if self.checkBox.isChecked():
-            self.det_thread.rate_check = True
+            haved_alarm = 0
+            print(str(haved_alarm))
         else:
-            self.det_thread.rate_check = False
-
+            haved_alarm = 1
+            print(str(haved_alarm))
     def chose_rtsp(self):
         self.rtsp_window = Window()
         config_file = 'config/ip.json'
@@ -313,7 +424,7 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             ip = config['ip']
         self.rtsp_window.rtspEdit.setText(ip)
         self.rtsp_window.show()
-        self.rtsp_window.rtspButton.clicked.connect(lambda: self.load_rtsp(self.rtsp_window.rtspEdit.text()))
+        # self.rtsp_window.rtspButton.clicked.connect(lambda: self.load_rtsp(self.rtsp_window.rtspEdit.text()))
 
     def load_rtsp(self, ip):
         try:
@@ -335,7 +446,7 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             self.stop()
             MessageBox(
                 self.closeButton, title='Tips', text='Loading camera', time=2000, auto=True).exec_()
-            # get the number of local cameras
+
             _, cams = Camera().get_cam_num()
             popMenu = QMenu()
             popMenu.setFixedWidth(self.cameraButton.width())
@@ -402,32 +513,32 @@ class MainWindow(QMainWindow, Ui_mainWindow):
                 rate = config['rate']
                 check = config['check']
                 savecheck = config['savecheck']
-        self.confSpinBox.setValue(iou)
-        self.iouSpinBox.setValue(conf)
-        self.rateSpinBox.setValue(rate)
+        # self.confSpinBox.setValue(iou)
+        # self.iouSpinBox.setValue(conf)
+        #self.rateSpinBox.setValue(rate)
         self.checkBox.setCheckState(check)
-        self.det_thread.rate_check = check
-        self.saveCheckBox.setCheckState(savecheck)
-        self.is_save()
+        #self.det_thread.rate_check = check
+        # self.saveCheckBox.setCheckState(savecheck)
+        # self.is_save()
 
     def change_val(self, x, flag):
-        if flag == 'confSpinBox':
-            self.confSlider.setValue(int(x*100))
-        elif flag == 'confSlider':
-            self.confSpinBox.setValue(x/100)
+        # if flag == 'confSpinBox':
+           # self.confSlider.setValue(int(x*100))
+        # elif flag == 'confSlider':
+        #     self.confSpinBox.setValue(x/100)
             self.det_thread.conf_thres = x/100
-        elif flag == 'iouSpinBox':
-            self.iouSlider.setValue(int(x*100))
-        elif flag == 'iouSlider':
-            self.iouSpinBox.setValue(x/100)
+        # elif flag == 'iouSpinBox':
+        #     self.iouSlider.setValue(int(x*100))
+        # elif flag == 'iouSlider':
+            # self.iouSpinBox.setValue(x/100)
             self.det_thread.iou_thres = x/100
-        elif flag == 'rateSpinBox':
-            self.rateSlider.setValue(x)
-        elif flag == 'rateSlider':
-            self.rateSpinBox.setValue(x)
-            self.det_thread.rate = x * 10
-        else:
-            pass
+        # elif flag == 'rateSpinBox':
+        #     self.rateSlider.setValue(x)
+        # elif flag == 'rateSlider':
+        #     self.rateSpinBox.setValue(x)
+        #     self.det_thread.rate = x * 10
+        # else:
+        #     pass
 
     def statistic_msg(self, msg):
         self.statistic_label.setText(msg)
@@ -436,18 +547,21 @@ class MainWindow(QMainWindow, Ui_mainWindow):
     def show_msg(self, msg):
         self.runButton.setChecked(Qt.Unchecked)
         self.statistic_msg(msg)
-        if msg == "Finished":
-            self.saveCheckBox.setEnabled(True)
+        # if msg == "Finished":
+        #     self.saveCheckBox.setEnabled(True)
 
     def change_model(self, x):
         self.model_type = self.comboBox.currentText()
         self.det_thread.weights = "./pt/%s" % self.model_type
         self.statistic_msg('Change model to %s' % x)
 
-    def open_file(self):
+    def change_COM(self):
+        global current_COM
+        current_COM = self.comboBox_1.currentText()
 
+
+    def open_file(self):
         config_file = 'config/fold.json'
-        # config = json.load(open(config_file, 'r', encoding='utf-8'))
         config = json.load(open(config_file, 'r', encoding='utf-8'))
         open_fold = config['open_fold']
         if not os.path.exists(open_fold):
@@ -472,7 +586,7 @@ class MainWindow(QMainWindow, Ui_mainWindow):
     def run_or_continue(self):
         self.det_thread.jump_out = False
         if self.runButton.isChecked():
-            self.saveCheckBox.setEnabled(False)
+            # self.saveCheckBox.setEnabled(False)
             self.det_thread.is_continue = True
             if not self.det_thread.isRunning():
                 self.det_thread.start()
@@ -485,9 +599,15 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             self.det_thread.is_continue = False
             self.statistic_msg('Pause')
 
+    def change_mobilephone(self):
+        f = open('mobilephone.txt', mode='w')
+        f.write(self.lineEdit.text())
+        global mobilePhone
+        mobilePhone = self.lineEdit.text()
+
     def stop(self):
         self.det_thread.jump_out = True
-        self.saveCheckBox.setEnabled(True)
+        # self.saveCheckBox.setEnabled(True)
 
     def mousePressEvent(self, event):
         self.m_Position = event.pos()
@@ -531,25 +651,23 @@ class MainWindow(QMainWindow, Ui_mainWindow):
             print(repr(e))
 
     def show_statistic(self, statistic_dic):
-        try:
+
             self.resultWidget.clear()
             statistic_dic = sorted(statistic_dic.items(), key=lambda x: x[1], reverse=True)
             statistic_dic = [i for i in statistic_dic if i[1] > 0]
-            results = [' '+str(i[0]) + '：' + str(i[1]) for i in statistic_dic]
+            results = [' '+str(i[0]) + '：数量为' + str(i[1]) for i in statistic_dic]
             self.resultWidget.addItems(results)
 
-        except Exception as e:
-            print(repr(e))
 
     def closeEvent(self, event):
         self.det_thread.jump_out = True
         config_file = 'config/setting.json'
         config = dict()
-        config['iou'] = self.confSpinBox.value()
-        config['conf'] = self.iouSpinBox.value()
-        config['rate'] = self.rateSpinBox.value()
+        # config['iou'] = self.confSpinBox.value()
+        # config['conf'] = self.iouSpinBox.value()
+        #config['rate'] = self.rateSpinBox.value()
         config['check'] = self.checkBox.checkState()
-        config['savecheck'] = self.saveCheckBox.checkState()
+        # config['savecheck'] = self.saveCheckBox.checkState()
         config_json = json.dumps(config, ensure_ascii=False, indent=2)
         with open(config_file, 'w', encoding='utf-8') as f:
             f.write(config_json)

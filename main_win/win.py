@@ -16,9 +16,9 @@ class Ui_mainWindow(object):
         mainWindow.setObjectName("mainWindow")
         mainWindow.resize(1394, 762)
         mainWindow.setMouseTracking(True)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/img/icon/图片1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        mainWindow.setWindowIcon(icon)
+        # icon = QtGui.QIcon()
+        #icon.addPixmap(QtGui.QPixmap(":/img/icon/图片1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # mainWindow.setWindowIcon(icon)
         mainWindow.setStyleSheet("#mainWindow{border:none;}")
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -235,6 +235,16 @@ class Ui_mainWindow(object):
 "border-image: url(:/img/icon/下拉_白色.png);\n"
 "}\n"
 "")
+        self.comboBox_1 = QtWidgets.QComboBox(mainWindow)
+        self.comboBox_1.setGeometry(QtCore.QRect(120, 210, 100, 30))
+        self.comboBox_1.setStyleSheet("font: 10pt \"宋体\";\n")
+        self.comboBox_1.addItem("")
+        self.comboBox_1.addItem("")
+        self.comboBox_1.addItem("")
+        self.comboBox_1.addItem("")
+        self.comboBox_1.addItem("")
+        self.comboBox_1.addItem("")
+
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -393,66 +403,66 @@ class Ui_mainWindow(object):
         self.cameraButton.setIcon(icon5)
         self.cameraButton.setObjectName("cameraButton")
         self.horizontalLayout_8.addWidget(self.cameraButton)
-        self.rtspButton = QtWidgets.QPushButton(self.groupBox_5)
-        self.rtspButton.setMinimumSize(QtCore.QSize(55, 28))
-        self.rtspButton.setMaximumSize(QtCore.QSize(16777215, 28))
-        self.rtspButton.setStyleSheet("QPushButton{font-family: \"Microsoft YaHei\";\n"
-"font-size: 14px;\n"
-"font-weight: bold;\n"
-"color:white;\n"
-"text-align: center center;\n"
-"padding-left: 5px;\n"
-"padding-right: 5px;\n"
-"padding-top: 4px;\n"
-"padding-bottom: 4px;\n"
-"border-style: solid;\n"
-"border-width: 0px;\n"
-"border-color: rgba(255, 255, 255, 255);\n"
-"border-radius: 3px;\n"
-"background-color: rgba(48,148,243,0);}\n"
-"\n"
-"QPushButton:focus{outline: none;}\n"
-"\n"
-"QPushButton::pressed{font-family: \"Microsoft YaHei\";\n"
-"                     font-size: 14px;\n"
-"                     font-weight: bold;\n"
-"                     color:rgb(200,200,200);\n"
-"                     text-align: center center;\n"
-"                     padding-left: 5px;\n"
-"                     padding-right: 5px;\n"
-"                     padding-top: 4px;\n"
-"                     padding-bottom: 4px;\n"
-"                     border-style: solid;\n"
-"                     border-width: 0px;\n"
-"                     border-color: rgba(255, 255, 255, 255);\n"
-"                     border-radius: 3px;\n"
-"                     background-color:  #bf513b;}\n"
-"\n"
-"QPushButton::disabled{font-family: \"Microsoft YaHei\";\n"
-"                     font-size: 14px;\n"
-"                     font-weight: bold;\n"
-"                     color:rgb(200,200,200);\n"
-"                     text-align: center center;\n"
-"                     padding-left: 5px;\n"
-"                     padding-right: 5px;\n"
-"                     padding-top: 4px;\n"
-"                     padding-bottom: 4px;\n"
-"                     border-style: solid;\n"
-"                     border-width: 0px;\n"
-"                     border-color: rgba(255, 255, 255, 255);\n"
-"                     border-radius: 3px;\n"
-"                     background-color:  #bf513b;}\n"
-"QPushButton::hover {\n"
-"border-style: solid;\n"
-"border-width: 0px;\n"
-"border-radius: 0px;\n"
-"background-color: rgba(48,148,243,80);}")
-        self.rtspButton.setText("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/img/icon/实时视频流解析.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.rtspButton.setIcon(icon6)
-        self.rtspButton.setObjectName("rtspButton")
-        self.horizontalLayout_8.addWidget(self.rtspButton)
+#         self.rtspButton = QtWidgets.QPushButton(self.groupBox_5)
+#         self.rtspButton.setMinimumSize(QtCore.QSize(55, 28))
+#         self.rtspButton.setMaximumSize(QtCore.QSize(16777215, 28))
+#         self.rtspButton.setStyleSheet("QPushButton{font-family: \"Microsoft YaHei\";\n"
+# "font-size: 14px;\n"
+# "font-weight: bold;\n"
+# "color:white;\n"
+# "text-align: center center;\n"
+# "padding-left: 5px;\n"
+# "padding-right: 5px;\n"
+# "padding-top: 4px;\n"
+# "padding-bottom: 4px;\n"
+# "border-style: solid;\n"
+# "border-width: 0px;\n"
+# "border-color: rgba(255, 255, 255, 255);\n"
+# "border-radius: 3px;\n"
+# "background-color: rgba(48,148,243,0);}\n"
+# "\n"
+# "QPushButton:focus{outline: none;}\n"
+# "\n"
+# "QPushButton::pressed{font-family: \"Microsoft YaHei\";\n"
+# "                     font-size: 14px;\n"
+# "                     font-weight: bold;\n"
+# "                     color:rgb(200,200,200);\n"
+# "                     text-align: center center;\n"
+# "                     padding-left: 5px;\n"
+# "                     padding-right: 5px;\n"
+# "                     padding-top: 4px;\n"
+# "                     padding-bottom: 4px;\n"
+# "                     border-style: solid;\n"
+# "                     border-width: 0px;\n"
+# "                     border-color: rgba(255, 255, 255, 255);\n"
+# "                     border-radius: 3px;\n"
+# "                     background-color:  #bf513b;}\n"
+# "\n"
+# "QPushButton::disabled{font-family: \"Microsoft YaHei\";\n"
+# "                     font-size: 14px;\n"
+# "                     font-weight: bold;\n"
+# "                     color:rgb(200,200,200);\n"
+# "                     text-align: center center;\n"
+# "                     padding-left: 5px;\n"
+# "                     padding-right: 5px;\n"
+# "                     padding-top: 4px;\n"
+# "                     padding-bottom: 4px;\n"
+# "                     border-style: solid;\n"
+# "                     border-width: 0px;\n"
+# "                     border-color: rgba(255, 255, 255, 255);\n"
+# "                     border-radius: 3px;\n"
+# "                     background-color:  #bf513b;}\n"
+# "QPushButton::hover {\n"
+# "border-style: solid;\n"
+# "border-width: 0px;\n"
+# "border-radius: 0px;\n"
+# "background-color: rgba(48,148,243,80);}")
+#         self.rtspButton.setText("")
+#         icon6 = QtGui.QIcon()
+#         icon6.addPixmap(QtGui.QPixmap(":/img/icon/实时视频流解析.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#         self.rtspButton.setIcon(icon6)
+#         self.rtspButton.setObjectName("rtspButton")
+#         self.horizontalLayout_8.addWidget(self.rtspButton)
         self.horizontalLayout_11.addWidget(self.groupBox_5)
         self.horizontalLayout_9.addLayout(self.horizontalLayout_11)
         self.verticalLayout_8.addLayout(self.horizontalLayout_9)
@@ -473,70 +483,85 @@ class Ui_mainWindow(object):
 "")
         self.label_2.setObjectName("label_2")
         self.verticalLayout_3.addWidget(self.label_2)
+
+        self.label_1 = QtWidgets.QLabel(mainWindow)
+        self.label_1.setGeometry(QtCore.QRect(5, 200, 120, 50))
+        self.label_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_1.setStyleSheet("QLabel\n"
+                                   "{\n"
+                                   "    font-size: 18px;\n"
+                                   "    font-family: \"Microsoft YaHei\";\n"
+                                   "    font-weight: bold;\n"
+                                   "         border-radius:9px;\n"
+                                   "        background:rgba(66, 195, 255, 0);\n"
+                                   "color: rgb(218, 218, 218);\n"
+                                   "}\n"
+                                   "")
+
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setSpacing(5)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.iouSpinBox = QtWidgets.QDoubleSpinBox(self.groupBox_8)
-        self.iouSpinBox.setMinimumSize(QtCore.QSize(50, 0))
-        self.iouSpinBox.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.iouSpinBox.setStyleSheet("QDoubleSpinBox{\n"
-"background:rgba(200, 200, 200,50);\n"
-"color:white;\n"
-"font-size: 14px;\n"
-"font-family: \"Microsoft YaHei UI\";\n"
-"border-style: solid;\n"
-"border-width: 1px;\n"
-"border-color: rgba(200, 200, 200,100);\n"
-"border-radius: 3px;}\n"
-"\n"
-"QDoubleSpinBox::down-button{\n"
-"background:rgba(200, 200, 200,0);\n"
-"border-image: url(:/img/icon/箭头_列表展开.png);}\n"
-"QDoubleSpinBox::down-button::hover{\n"
-"background:rgba(200, 200, 200,100);\n"
-"border-image: url(:/img/icon/箭头_列表展开.png);}\n"
-"\n"
-"QDoubleSpinBox::up-button{\n"
-"background:rgba(200, 200, 200,0);\n"
-"border-image: url(:/img/icon/箭头_列表收起.png);}\n"
-"QDoubleSpinBox::up-button::hover{\n"
-"background:rgba(200, 200, 200,100);\n"
-"border-image: url(:/img/icon/箭头_列表收起.png);}\n"
-"")
-        self.iouSpinBox.setMaximum(1.0)
-        self.iouSpinBox.setSingleStep(0.01)
-        self.iouSpinBox.setProperty("value", 0.45)
-        self.iouSpinBox.setObjectName("iouSpinBox")
-        self.horizontalLayout_4.addWidget(self.iouSpinBox)
-        self.iouSlider = QtWidgets.QSlider(self.groupBox_8)
-        self.iouSlider.setStyleSheet("QSlider{\n"
-"border-color: #bcbcbc;\n"
-"color:#d9d9d9;\n"
-"}\n"
-"QSlider::groove:horizontal {                                \n"
-"     border: 1px solid #999999;                             \n"
-"     height: 3px;                                           \n"
-"    margin: 0px 0;                                         \n"
-"     left: 5px; right: 5px; \n"
-" }\n"
-"QSlider::handle:horizontal {                               \n"
-"     border: 0px ; \n"
-"     border-image: url(:/img/icon/圆.png);\n"
-"     width:15px;\n"
-"     margin: -7px -7px -7px -7px;                  \n"
-"} \n"
-"QSlider::add-page:horizontal{\n"
-"background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #d9d9d9, stop:0.25 #d9d9d9, stop:0.5 #d9d9d9, stop:1 #d9d9d9); \n"
-"\n"
-"}\n"
-"QSlider::sub-page:horizontal{                               \n"
-" background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #373737, stop:0.25 #373737, stop:0.5 #373737, stop:1 #373737);                     \n"
-"}")
-        self.iouSlider.setMaximum(100)
-        self.iouSlider.setProperty("value", 45)
-        self.iouSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.iouSlider.setObjectName("iouSlider")
-        self.horizontalLayout_4.addWidget(self.iouSlider)
+#         self.iouSpinBox = QtWidgets.QDoubleSpinBox(self.groupBox_8)
+#         self.iouSpinBox.setMinimumSize(QtCore.QSize(50, 0))
+#         self.iouSpinBox.setMaximumSize(QtCore.QSize(50, 16777215))
+#         self.iouSpinBox.setStyleSheet("QDoubleSpinBox{\n"
+# "background:rgba(200, 200, 200,50);\n"
+# "color:white;\n"
+# "font-size: 14px;\n"
+# "font-family: \"Microsoft YaHei UI\";\n"
+# "border-style: solid;\n"
+# "border-width: 1px;\n"
+# "border-color: rgba(200, 200, 200,100);\n"
+# "border-radius: 3px;}\n"
+# "\n"
+# "QDoubleSpinBox::down-button{\n"
+# "background:rgba(200, 200, 200,0);\n"
+# "border-image: url(:/img/icon/箭头_列表展开.png);}\n"
+# "QDoubleSpinBox::down-button::hover{\n"
+# "background:rgba(200, 200, 200,100);\n"
+# "border-image: url(:/img/icon/箭头_列表展开.png);}\n"
+# "\n"
+# "QDoubleSpinBox::up-button{\n"
+# "background:rgba(200, 200, 200,0);\n"
+# "border-image: url(:/img/icon/箭头_列表收起.png);}\n"
+# "QDoubleSpinBox::up-button::hover{\n"
+# "background:rgba(200, 200, 200,100);\n"
+# "border-image: url(:/img/icon/箭头_列表收起.png);}\n"
+# "")
+#         self.iouSpinBox.setMaximum(1.0)
+#         self.iouSpinBox.setSingleStep(0.01)
+#         self.iouSpinBox.setProperty("value", 0.45)
+#         self.iouSpinBox.setObjectName("iouSpinBox")
+#         self.horizontalLayout_4.addWidget(self.iouSpinBox)
+#         self.iouSlider = QtWidgets.QSlider(self.groupBox_8)
+#         self.iouSlider.setStyleSheet("QSlider{\n"
+# "border-color: #bcbcbc;\n"
+# "color:#d9d9d9;\n"
+# "}\n"
+# "QSlider::groove:horizontal {                                \n"
+# "     border: 1px solid #999999;                             \n"
+# "     height: 3px;                                           \n"
+# "    margin: 0px 0;                                         \n"
+# "     left: 5px; right: 5px; \n"
+# " }\n"
+# "QSlider::handle:horizontal {                               \n"
+# "     border: 0px ; \n"
+# "     border-image: url(:/img/icon/圆.png);\n"
+# "     width:15px;\n"
+# "     margin: -7px -7px -7px -7px;                  \n"
+# "} \n"
+# "QSlider::add-page:horizontal{\n"
+# "background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #d9d9d9, stop:0.25 #d9d9d9, stop:0.5 #d9d9d9, stop:1 #d9d9d9); \n"
+# "\n"
+# "}\n"
+# "QSlider::sub-page:horizontal{                               \n"
+# " background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #373737, stop:0.25 #373737, stop:0.5 #373737, stop:1 #373737);                     \n"
+# "}")
+#         self.iouSlider.setMaximum(100)
+#         self.iouSlider.setProperty("value", 45)
+#         self.iouSlider.setOrientation(QtCore.Qt.Horizontal)
+#         self.iouSlider.setObjectName("iouSlider")
+#         self.horizontalLayout_4.addWidget(self.iouSlider)
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
         self.verticalLayout_8.addLayout(self.verticalLayout_3)
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -559,69 +584,69 @@ class Ui_mainWindow(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setSpacing(5)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.confSpinBox = QtWidgets.QDoubleSpinBox(self.groupBox_8)
-        self.confSpinBox.setMinimumSize(QtCore.QSize(50, 0))
-        self.confSpinBox.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.confSpinBox.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.confSpinBox.setStyleSheet("QDoubleSpinBox{\n"
-"background:rgba(200, 200, 200,50);\n"
-"color:white;\n"
-"font-size: 14px;\n"
-"font-family: \"Microsoft YaHei UI\";\n"
-"border-style: solid;\n"
-"border-width: 1px;\n"
-"border-color: rgba(200, 200, 200,100);\n"
-"border-radius: 3px;}\n"
-"\n"
-"QDoubleSpinBox::down-button{\n"
-"background:rgba(200, 200, 200,0);\n"
-"border-image: url(:/img/icon/箭头_列表展开.png);}\n"
-"QDoubleSpinBox::down-button::hover{\n"
-"background:rgba(200, 200, 200,100);\n"
-"border-image: url(:/img/icon/箭头_列表展开.png);}\n"
-"\n"
-"QDoubleSpinBox::up-button{\n"
-"background:rgba(200, 200, 200,0);\n"
-"border-image: url(:/img/icon/箭头_列表收起.png);}\n"
-"QDoubleSpinBox::up-button::hover{\n"
-"background:rgba(200, 200, 200,100);\n"
-"border-image: url(:/img/icon/箭头_列表收起.png);}\n"
-"")
-        self.confSpinBox.setMaximum(1.0)
-        self.confSpinBox.setSingleStep(0.01)
-        self.confSpinBox.setProperty("value", 0.25)
-        self.confSpinBox.setObjectName("confSpinBox")
-        self.horizontalLayout_3.addWidget(self.confSpinBox)
-        self.confSlider = QtWidgets.QSlider(self.groupBox_8)
-        self.confSlider.setStyleSheet("QSlider{\n"
-"border-color: #bcbcbc;\n"
-"color:#d9d9d9;\n"
-"}\n"
-"QSlider::groove:horizontal {                                \n"
-"     border: 1px solid #999999;                             \n"
-"     height: 3px;                                           \n"
-"    margin: 0px 0;                                         \n"
-"     left: 5px; right: 5px; \n"
-" }\n"
-"QSlider::handle:horizontal {                               \n"
-"     border: 0px ; \n"
-"     border-image: url(:/img/icon/圆.png);\n"
-"     width:15px;\n"
-"     margin: -7px -7px -7px -7px;                  \n"
-"} \n"
-"QSlider::add-page:horizontal{\n"
-"background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #d9d9d9, stop:0.25 #d9d9d9, stop:0.5 #d9d9d9, stop:1 #d9d9d9); \n"
-"\n"
-"}\n"
-"QSlider::sub-page:horizontal{                               \n"
-" background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #373737, stop:0.25 #373737, stop:0.5 #373737, stop:1 #373737);                     \n"
-"}")
-        self.confSlider.setMaximum(100)
-        self.confSlider.setProperty("value", 25)
-        self.confSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.confSlider.setTickPosition(QtWidgets.QSlider.NoTicks)
-        self.confSlider.setObjectName("confSlider")
-        self.horizontalLayout_3.addWidget(self.confSlider)
+#         self.confSpinBox = QtWidgets.QDoubleSpinBox(self.groupBox_8)
+#         self.confSpinBox.setMinimumSize(QtCore.QSize(50, 0))
+#         self.confSpinBox.setMaximumSize(QtCore.QSize(50, 16777215))
+#         self.confSpinBox.setFocusPolicy(QtCore.Qt.ClickFocus)
+#         self.confSpinBox.setStyleSheet("QDoubleSpinBox{\n"
+# "background:rgba(200, 200, 200,50);\n"
+# "color:white;\n"
+# "font-size: 14px;\n"
+# "font-family: \"Microsoft YaHei UI\";\n"
+# "border-style: solid;\n"
+# "border-width: 1px;\n"
+# "border-color: rgba(200, 200, 200,100);\n"
+# "border-radius: 3px;}\n"
+# "\n"
+# "QDoubleSpinBox::down-button{\n"
+# "background:rgba(200, 200, 200,0);\n"
+# "border-image: url(:/img/icon/箭头_列表展开.png);}\n"
+# "QDoubleSpinBox::down-button::hover{\n"
+# "background:rgba(200, 200, 200,100);\n"
+# "border-image: url(:/img/icon/箭头_列表展开.png);}\n"
+# "\n"
+# "QDoubleSpinBox::up-button{\n"
+# "background:rgba(200, 200, 200,0);\n"
+# "border-image: url(:/img/icon/箭头_列表收起.png);}\n"
+# "QDoubleSpinBox::up-button::hover{\n"
+# "background:rgba(200, 200, 200,100);\n"
+# "border-image: url(:/img/icon/箭头_列表收起.png);}\n"
+# "")
+#         self.confSpinBox.setMaximum(1.0)
+#         self.confSpinBox.setSingleStep(0.01)
+#         self.confSpinBox.setProperty("value", 0.25)
+#         self.confSpinBox.setObjectName("confSpinBox")
+#         self.horizontalLayout_3.addWidget(self.confSpinBox)
+#         self.confSlider = QtWidgets.QSlider(self.groupBox_8)
+#         self.confSlider.setStyleSheet("QSlider{\n"
+# "border-color: #bcbcbc;\n"
+# "color:#d9d9d9;\n"
+# "}\n"
+# "QSlider::groove:horizontal {                                \n"
+# "     border: 1px solid #999999;                             \n"
+# "     height: 3px;                                           \n"
+# "    margin: 0px 0;                                         \n"
+# "     left: 5px; right: 5px; \n"
+# " }\n"
+# "QSlider::handle:horizontal {                               \n"
+# "     border: 0px ; \n"
+# "     border-image: url(:/img/icon/圆.png);\n"
+# "     width:15px;\n"
+# "     margin: -7px -7px -7px -7px;                  \n"
+# "} \n"
+# "QSlider::add-page:horizontal{\n"
+# "background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #d9d9d9, stop:0.25 #d9d9d9, stop:0.5 #d9d9d9, stop:1 #d9d9d9); \n"
+# "\n"
+# "}\n"
+# "QSlider::sub-page:horizontal{                               \n"
+# " background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #373737, stop:0.25 #373737, stop:0.5 #373737, stop:1 #373737);                     \n"
+# "}")
+#         self.confSlider.setMaximum(100)
+#         self.confSlider.setProperty("value", 25)
+#         self.confSlider.setOrientation(QtCore.Qt.Horizontal)
+#         self.confSlider.setTickPosition(QtWidgets.QSlider.NoTicks)
+#         self.confSlider.setObjectName("confSlider")
+#         self.horizontalLayout_3.addWidget(self.confSlider)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.verticalLayout_8.addLayout(self.verticalLayout)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
@@ -630,21 +655,23 @@ class Ui_mainWindow(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        self.label_8 = QtWidgets.QLabel(self.groupBox_8)
-        self.label_8.setMaximumSize(QtCore.QSize(80, 16777215))
-        self.label_8.setStyleSheet("QLabel\n"
-"{\n"
-"    font-size: 18px;\n"
-"    font-family: \"Microsoft YaHei\";\n"
-"    font-weight: bold;\n"
-"         border-radius:9px;\n"
-"        background:rgba(66, 195, 255, 0);\n"
-"color: rgb(218, 218, 218);\n"
-"}\n"
-"")
-        self.label_8.setObjectName("label_8")
-        self.horizontalLayout_14.addWidget(self.label_8)
+#         self.label_8 = QtWidgets.QLabel(self.groupBox_8)
+#         self.label_8.setMaximumSize(QtCore.QSize(80, 16777215))
+#         self.label_8.setStyleSheet("QLabel\n"
+# "{\n"
+# "    font-size: 18px;\n"
+# "    font-family: \"Microsoft YaHei\";\n"
+# "    font-weight: bold;\n"
+# "         border-radius:9px;\n"
+# "        background:rgba(66, 195, 255, 0);\n"
+# "color: rgb(218, 218, 218);\n"
+# "}\n"
+# "")
+#         self.label_8.setObjectName("label_8")
+#         self.horizontalLayout_14.addWidget(self.label_8)
         self.checkBox = QtWidgets.QCheckBox(self.groupBox_8)
+        # self.checkBox.setGeometry(QtCore.QRect(240, 160, 92, 20))
+
         self.checkBox.setStyleSheet("\n"
 "QCheckBox\n"
 "{font-size: 16px;\n"
@@ -658,14 +685,14 @@ class Ui_mainWindow(object):
 "    width: 20px;\n"
 "    height: 20px;\n"
 "}\n"
-"QCheckBox::indicator:unchecked {\n"
-"    image: url(:/img/icon/button-off.png);\n"
-"}\n"
-"\n"
-"QCheckBox::indicator:checked {\n"
-"    \n"
-"    image: url(:/img/icon/button-on.png);\n"
-"}\n"
+# "QCheckBox::indicator:unchecked {\n"
+# "    image: url(:/img/icon/button-off.png);\n"
+# "}\n"
+# "\n"
+# "QCheckBox::indicator:checked {\n"
+# "    \n"
+# "    image: url(:/img/icon/button-on.png);\n"
+# "}\n"
 "")
         self.checkBox.setChecked(True)
         self.checkBox.setObjectName("checkBox")
@@ -674,73 +701,73 @@ class Ui_mainWindow(object):
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_13.setSpacing(5)
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        self.rateSpinBox = QtWidgets.QSpinBox(self.groupBox_8)
-        self.rateSpinBox.setMinimumSize(QtCore.QSize(50, 0))
-        self.rateSpinBox.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.rateSpinBox.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.rateSpinBox.setStyleSheet("QSpinBox{\n"
-"background:rgba(200, 200, 200,50);\n"
-"color:white;\n"
-"font-size: 14px;\n"
-"font-family: \"Microsoft YaHei UI\";\n"
-"border-style: solid;\n"
-"border-width: 1px;\n"
-"border-color: rgba(200, 200, 200,100);\n"
-"border-radius: 3px;}\n"
-"\n"
-"QSpinBox::down-button{\n"
-"background:rgba(200, 200, 200,0);\n"
-"border-image: url(:/img/icon/箭头_列表展开.png);}\n"
-"QDoubleSpinBox::down-button::hover{\n"
-"background:rgba(200, 200, 200,100);\n"
-"border-image: url(:/img/icon/箭头_列表展开.png);}\n"
-"\n"
-"QSpinBox::up-button{\n"
-"background:rgba(200, 200, 200,0);\n"
-"border-image: url(:/img/icon/箭头_列表收起.png);}\n"
-"QSpinBox::up-button::hover{\n"
-"background:rgba(200, 200, 200,100);\n"
-"border-image: url(:/img/icon/箭头_列表收起.png);}\n"
-"")
-        self.rateSpinBox.setMinimum(1)
-        self.rateSpinBox.setMaximum(20)
-        self.rateSpinBox.setSingleStep(1)
-        self.rateSpinBox.setProperty("value", 1)
-        self.rateSpinBox.setObjectName("rateSpinBox")
-        self.horizontalLayout_13.addWidget(self.rateSpinBox)
-        self.rateSlider = QtWidgets.QSlider(self.groupBox_8)
-        self.rateSlider.setStyleSheet("QSlider{\n"
-"border-color: #bcbcbc;\n"
-"color:#d9d9d9;\n"
-"}\n"
-"QSlider::groove:horizontal {                                \n"
-"     border: 1px solid #999999;                             \n"
-"     height: 3px;                                           \n"
-"    margin: 0px 0;                                         \n"
-"     left: 5px; right: 5px; \n"
-" }\n"
-"QSlider::handle:horizontal {                               \n"
-"     border: 0px ; \n"
-"     border-image: url(:/img/icon/圆.png);\n"
-"     width:15px;\n"
-"     margin: -7px -7px -7px -7px;                  \n"
-"} \n"
-"QSlider::add-page:horizontal{\n"
-"background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #d9d9d9, stop:0.25 #d9d9d9, stop:0.5 #d9d9d9, stop:1 #d9d9d9); \n"
-"\n"
-"}\n"
-"QSlider::sub-page:horizontal{                               \n"
-" background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #373737, stop:0.25 #373737, stop:0.5 #373737, stop:1 #373737);                     \n"
-"}")
-        self.rateSlider.setMinimum(1)
-        self.rateSlider.setMaximum(20)
-        self.rateSlider.setSingleStep(1)
-        self.rateSlider.setPageStep(1)
-        self.rateSlider.setProperty("value", 1)
-        self.rateSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.rateSlider.setTickPosition(QtWidgets.QSlider.NoTicks)
-        self.rateSlider.setObjectName("rateSlider")
-        self.horizontalLayout_13.addWidget(self.rateSlider)
+#         self.rateSpinBox = QtWidgets.QSpinBox(self.groupBox_8)
+#         self.rateSpinBox.setMinimumSize(QtCore.QSize(50, 0))
+#         self.rateSpinBox.setMaximumSize(QtCore.QSize(50, 16777215))
+#         self.rateSpinBox.setFocusPolicy(QtCore.Qt.ClickFocus)
+#         self.rateSpinBox.setStyleSheet("QSpinBox{\n"
+# "background:rgba(200, 200, 200,50);\n"
+# "color:white;\n"
+# "font-size: 14px;\n"
+# "font-family: \"Microsoft YaHei UI\";\n"
+# "border-style: solid;\n"
+# "border-width: 1px;\n"
+# "border-color: rgba(200, 200, 200,100);\n"
+# "border-radius: 3px;}\n"
+# "\n"
+# "QSpinBox::down-button{\n"
+# "background:rgba(200, 200, 200,0);\n"
+# "border-image: url(:/img/icon/箭头_列表展开.png);}\n"
+# "QDoubleSpinBox::down-button::hover{\n"
+# "background:rgba(200, 200, 200,100);\n"
+# "border-image: url(:/img/icon/箭头_列表展开.png);}\n"
+# "\n"
+# "QSpinBox::up-button{\n"
+# "background:rgba(200, 200, 200,0);\n"
+# "border-image: url(:/img/icon/箭头_列表收起.png);}\n"
+# "QSpinBox::up-button::hover{\n"
+# "background:rgba(200, 200, 200,100);\n"
+# "border-image: url(:/img/icon/箭头_列表收起.png);}\n"
+# "")
+#         self.rateSpinBox.setMinimum(1)
+#         self.rateSpinBox.setMaximum(20)
+#         self.rateSpinBox.setSingleStep(1)
+#         self.rateSpinBox.setProperty("value", 1)
+#         self.rateSpinBox.setObjectName("rateSpinBox")
+#         self.horizontalLayout_13.addWidget(self.rateSpinBox)
+#         self.rateSlider = QtWidgets.QSlider(self.groupBox_8)
+#         self.rateSlider.setStyleSheet("QSlider{\n"
+# "border-color: #bcbcbc;\n"
+# "color:#d9d9d9;\n"
+# "}\n"
+# "QSlider::groove:horizontal {                                \n"
+# "     border: 1px solid #999999;                             \n"
+# "     height: 3px;                                           \n"
+# "    margin: 0px 0;                                         \n"
+# "     left: 5px; right: 5px; \n"
+# " }\n"
+# "QSlider::handle:horizontal {                               \n"
+# "     border: 0px ; \n"
+# "     border-image: url(:/img/icon/圆.png);\n"
+# "     width:15px;\n"
+# "     margin: -7px -7px -7px -7px;                  \n"
+# "} \n"
+# "QSlider::add-page:horizontal{\n"
+# "background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #d9d9d9, stop:0.25 #d9d9d9, stop:0.5 #d9d9d9, stop:1 #d9d9d9); \n"
+# "\n"
+# "}\n"
+# "QSlider::sub-page:horizontal{                               \n"
+# " background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #373737, stop:0.25 #373737, stop:0.5 #373737, stop:1 #373737);                     \n"
+# "}")
+#         self.rateSlider.setMinimum(1)
+#         self.rateSlider.setMaximum(20)
+#         self.rateSlider.setSingleStep(1)
+#         self.rateSlider.setPageStep(1)
+#         self.rateSlider.setProperty("value", 1)
+#         self.rateSlider.setOrientation(QtCore.Qt.Horizontal)
+#         self.rateSlider.setTickPosition(QtWidgets.QSlider.NoTicks)
+#         self.rateSlider.setObjectName("rateSlider")
+#         self.horizontalLayout_13.addWidget(self.rateSlider)
         self.verticalLayout_5.addLayout(self.horizontalLayout_13)
         self.verticalLayout_8.addLayout(self.verticalLayout_5)
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupBox_8)
@@ -754,32 +781,32 @@ class Ui_mainWindow(object):
         self.horizontalLayout_36 = QtWidgets.QHBoxLayout(self.groupBox_6)
         self.horizontalLayout_36.setContentsMargins(11, 0, 11, 0)
         self.horizontalLayout_36.setObjectName("horizontalLayout_36")
-        self.saveCheckBox = QtWidgets.QCheckBox(self.groupBox_6)
-        self.saveCheckBox.setStyleSheet("\n"
-"QCheckBox\n"
-"{font-size: 18px;\n"
-"    font-family: \"Microsoft YaHei\";\n"
-"    font-weight: bold;\n"
-"         border-radius:9px;\n"
-"        background:rgba(66, 195, 255, 0);\n"
-"color: rgb(218, 218, 218);;}\n"
-"\n"
-"QCheckBox::indicator {\n"
-"    width: 20px;\n"
-"    height: 20px;\n"
-"}\n"
-"QCheckBox::indicator:unchecked {\n"
-"    image: url(:/img/icon/button-off.png);\n"
-"}\n"
-"\n"
-"QCheckBox::indicator:checked {\n"
-"    \n"
-"    image: url(:/img/icon/button-on.png);\n"
-"}\n"
-"")
-        self.saveCheckBox.setChecked(True)
-        self.saveCheckBox.setObjectName("saveCheckBox")
-        self.horizontalLayout_36.addWidget(self.saveCheckBox)
+        # self.saveCheckBox = QtWidgets.QCheckBox(self.groupBox_6)
+#         self.saveCheckBox.setStyleSheet("\n"
+# "QCheckBox\n"
+# "{font-size: 18px;\n"
+# "    font-family: \"Microsoft YaHei\";\n"
+# "    font-weight: bold;\n"
+# "         border-radius:9px;\n"
+# "        background:rgba(66, 195, 255, 0);\n"
+# "color: rgb(218, 218, 218);;}\n"
+# "\n"
+# "QCheckBox::indicator {\n"
+# "    width: 20px;\n"
+# "    height: 20px;\n"
+# "}\n"
+# "QCheckBox::indicator:unchecked {\n"
+# "    image: url(:/img/icon/button-off.png);\n"
+# "}\n"
+# "\n"
+# "QCheckBox::indicator:checked {\n"
+# "    \n"
+# "    image: url(:/img/icon/button-on.png);\n"
+# "}\n"
+# "")
+#         self.saveCheckBox.setChecked(True)
+#         self.saveCheckBox.setObjectName("saveCheckBox")
+#         self.horizontalLayout_36.addWidget(self.saveCheckBox)
         self.verticalLayout_8.addWidget(self.groupBox_6)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setContentsMargins(-1, 0, -1, 0)
@@ -868,6 +895,8 @@ class Ui_mainWindow(object):
         self.label_6 = QtWidgets.QLabel(self.groupBox_3)
         self.label_6.setMinimumSize(QtCore.QSize(0, 0))
         self.label_6.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.label_6.setGeometry(QtCore.QRect(70, 400, 160, 30))
+        #self.label_6.setAlignment(QtCore.Qt.AlignCenter)
         self.label_6.setStyleSheet("QLabel\n"
 "{\n"
 "    font-size: 22px;\n"
@@ -1051,26 +1080,57 @@ class Ui_mainWindow(object):
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
 
+        self.lineEdit = QtWidgets.QLineEdit(mainWindow)
+        self.lineEdit.setGeometry(QtCore.QRect(100, 175, 120, 30))
+        self.lineEdit.setStyleSheet("border: 1px solid black;")
+        self.lineEdit.setObjectName("lineEdit")
+
+        self.pushButton_2 = QtWidgets.QPushButton(mainWindow)
+        self.pushButton_2.setGeometry(QtCore.QRect(230, 175, 60, 30))
+        self.pushButton_2.setStyleSheet("font: 10pt \"Microsoft YaHei\";\n"
+                                        "border:0px solid black;\n"
+                                        "color: rgb(218, 218, 218);\n"
+                                        "background-color:66, 195, 255, 0;")
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.setChecked(False)
+        # self.pushButton_2.clicked.connect(lambda: self.vim_show())
+        self.pushButton_2.setText("确定")
+        #
+        # self.pushButton_2.raise_()
+
+
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
         mainWindow.setWindowTitle(_translate("mainWindow", "YOLOv5检测界面"))
-        self.label_4.setText(_translate("mainWindow", "YOLOv5 GUI"))
-        self.label_5.setText(_translate("mainWindow", "setting"))
-        self.label_3.setText(_translate("mainWindow", "model"))
+        self.label_4.setText(_translate("mainWindow", "鲜活鱼状态感知和预警系统"))
+        self.label_5.setText(_translate("mainWindow", "设置"))
+        self.label_3.setText(_translate("mainWindow", "模型"))
+
+        self.comboBox_1.setItemText(0, _translate("mainWindow", "COM1"))
+        self.comboBox_1.setItemText(1, _translate("mainWindow", "COM2"))
+        self.comboBox_1.setItemText(2, _translate("mainWindow", "COM3"))
+        self.comboBox_1.setItemText(3, _translate("mainWindow", "COM4"))
+        self.comboBox_1.setItemText(4, _translate("mainWindow", "COM5"))
+        self.comboBox_1.setItemText(5, _translate("mainWindow", "COM6"))
+
         self.comboBox.setItemText(0, _translate("mainWindow", "yolov5s.pt"))
         self.comboBox.setItemText(1, _translate("mainWindow", "yolov5m.pt"))
         self.comboBox.setItemText(2, _translate("mainWindow", "yolov5l.pt"))
         self.comboBox.setItemText(3, _translate("mainWindow", "yolov5x.pt"))
-        self.label_10.setText(_translate("mainWindow", "input"))
+
+        self.label_10.setText(_translate("mainWindow", "输入"))
+        self.label_1.setText(_translate("mainWindow", "请选择串口："))
+
         self.fileButton.setToolTip(_translate("mainWindow", "file"))
         self.cameraButton.setToolTip(_translate("mainWindow", "camera"))
-        self.rtspButton.setToolTip(_translate("mainWindow", "rtsp"))
-        self.label_2.setText(_translate("mainWindow", "IoU"))
-        self.label.setText(_translate("mainWindow", "conf"))
-        self.label_8.setText(_translate("mainWindow", "latency"))
-        self.checkBox.setText(_translate("mainWindow", "enable"))
-        self.saveCheckBox.setText(_translate("mainWindow", "save automatically"))
-        self.label_11.setText(_translate("mainWindow", "result statistics"))
-        self.label_6.setText(_translate("mainWindow", "view"))
+        # self.rtspButton.setToolTip(_translate("mainWindow", "rtsp"))
+        self.label_2.setText(_translate("mainWindow", "手机号码："))
+        # self.label.setText(_translate("mainWindow", "置信度"))
+        #self.label_8.setText(_translate("mainWindow", "延迟"))
+        self.checkBox.setText(_translate("mainWindow", "鱼状态异常时发送短信并拨打报警电话"))
+        # self.saveCheckBox.setText(_translate("mainWindow", "拨打电话"))
+        self.label_11.setText(_translate("mainWindow", "状态感知结果"))
+        self.label_6.setText(_translate("mainWindow", "鲜活鱼状态实时感知画面"))
+        #self.pushButton_2.setText(_translate("mainWindow", "设置"))
 from MouseLabel import Label_click_Mouse
 import apprcc_rc
